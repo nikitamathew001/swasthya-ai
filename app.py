@@ -252,16 +252,11 @@ elif module == "🎙️ Voice Health Assistant":
                 client = get_client()
 
                 with st.spinner("Transcribing your speech..."):
-                    # Give the SDK a named, file-like audio object.
-                    audio_file = io.BytesIO(audio.getvalue())
-                    audio_file.name = "voice_question.wav"
-
-                    transcription = client.speech_to_text.transcribe(
-                        file=audio_file,
-                        model="saaras:v4",
-                        language_code="unknown",
-                        mode="transcribe",
+                    audio_bytes = audio.getvalue()
+                    transcription = client.speech_to_text.transcribe(file=("voice_question.wav", audio_bytes, "audio/wav"),
+                    model="saaras:v4", language_code="unknown", mode="transcribe",
                     )
+
 
                 transcript = getattr(transcription, "transcript", "") or ""
                 detected_language = (
